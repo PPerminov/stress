@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: stress
+  name: stress
+  namespace: default
+spec:
+  replicas: 1
+  revisionHistoryLimit: 1
+  selector:
+    matchLabels:
+      app: stress
+      component: worker
+  template:
+    metadata:
+      labels:
+        app: stress
+        component: worker
+    spec:
+      containers:
+      - image: pavelatcai/stress
+        imagePullPolicy: IfNotPresent
+        name: stress
+        volumeMounts:
+        - mountPath: /slow
+          name: slow
+          readOnly: false
+      volumes:
+      - name: slow
+        flexVolume:
+          driver: ceph.rook.io/rook
+          fsType: ceph
+          options:
+            fsName: myfs
+            clusterNamespace: rook-ceph
+---
+apiVersion: ceph.rook.io/v1
+kind: CephFilesystem
+metadata:
+  name: myfs
+  namespace: rook-ceph
+spec:
+  metadataPool:
+    replicated:
+      size: 3
+  dataPools:
+    - replicated:
+        size: 3
+  metadataServer:
+    activeCount: 1
+    activeStandby: true
+---

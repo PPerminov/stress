@@ -1,0 +1,14 @@
+export TIME_TO_RUN=`date +%s`
+export DEBUG=0
+export TYPE=2
+export DISK_IO_PROCESSES=12
+export MAXFILESIZE=20
+export WORK_PATH=/slow
+export READ_PRIORITY=6
+export INITIAL_REMOVE=1
+export STRESS_PROCESSES=1
+export MAX_MEM=60
+export MEM_INCREMENTER=1
+export MEM=60
+export TIMEOUT=300
+export BRUTE_FORCE_AMOUNT=600

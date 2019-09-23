@@ -1,0 +1,23 @@
+version:         '3.3'
+
+services:
+  iostress_1:
+    image:       pavelatcai/stress:latest
+    command:     bash /stress/run.sh
+    environment:
+      - TIME_TO_RUN=0
+      - DEBUG=0
+      - TYPE=2 # 0 = 1 + 2 , 1 - only memory part, 2 - only disk part, 3 - memory hard allocation, 4 - python term catcher
+      - DISK_IO_PROCESSES=1
+      - MAXFILESIZE=20   # in MB
+      - WORK_PATH=/slow
+      - READ_PRIORITY=2 # from 1 to infinity. Higher - more read processes. 1 - only write
+      - INITIAL_REMOVE=0 # if 0 then it will not remove files in folder but will use it. If not 0 then vice versa
+      - STRESS_PROCESSES=4
+      - MAX_MEM=800
+      - MEM_INCREMENTER=1
+      - MEM=800
+      - TIMEOUT=300
+      - BRUTE_FORCE_AMOUNT=6000 # in Megabytes
+    volumes:
+      - /somefolder:/slow
