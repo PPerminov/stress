@@ -1,3 +1,16 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: sharedfs
+  namespace: default
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 40Gi
+  storageClassName: rook-ceph-block
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -22,32 +35,46 @@ spec:
       - image: pavelatcai/stress
         imagePullPolicy: IfNotPresent
         name: stress
+        tty: true
+        command: ["cat"]
+        env:
+        # - name: MAXFILESIZE
+        #   value: "100"
+        - name: TYPE
+          value: "2"
+        - name: DISK_IO_PROCESSES
+          value: "2"
+        - name: DEBUG
+          value: "1"
+                  # - name: TIME_TO_RUN        #   value: "12:33:00"
         volumeMounts:
         - mountPath: /slow
           name: slow
           readOnly: false
       volumes:
       - name: slow
-        flexVolume:
-          driver: ceph.rook.io/rook
-          fsType: ceph
-          options:
-            fsName: myfs
-            clusterNamespace: rook-ceph
----
-apiVersion: ceph.rook.io/v1
-kind: CephFilesystem
-metadata:
-  name: myfs
-  namespace: rook-ceph
-spec:
-  metadataPool:
-    replicated:
-      size: 3
-  dataPools:
-    - replicated:
-        size: 3
-  metadataServer:
-    activeCount: 1
-    activeStandby: true
----
+        persistentVolumeClaim:
+          claimName: sharedfs
+#        flexVolume:
+ #         driver: ceph.rook.io/rook
+  #        fsType: ceph
+   #       options:
+    #        fsName: myfs
+     #       clusterNamespace: rook-ceph
+# ---
+# apiVersion: ceph.rook.io/v1
+# kind: CephFilesystem
+# metadata:
+#   name: myfs
+#   namespace: rook-ceph
+# spec:
+#   metadataPool:
+#     replicated:
+#       size: 3
+#   dataPools:
+#     - replicated:
+#         size: 30
+#   metadataServer:
+#     activeCount: 1
+#     activeStandby: true
+# ---

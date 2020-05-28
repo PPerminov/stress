@@ -6,7 +6,7 @@ RUN apt update && \
   rm -rf /var/cache/apt /var/lib/apt/lists/
 COPY main.py .
 COPY run.sh .
-COPY brute_force .
-COPY term.py .
+#COPY brute_force .
+#COPY term.py .
 CMD ./run.sh
 ENV TYPE 2

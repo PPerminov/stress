@@ -71,6 +71,11 @@ else
     export TIMEOUT=300
   fi
 
+  if [[ -z $GENERATE_SOME_LOGS ]]
+  then
+    export GENERATE_SOME_LOGS=0
+  fi
+
   if [[ -z $BRUTE_FORCE_AMOUNT ]]
   then
     export BRUTE_FORCE_AMOUNT=600
@@ -130,8 +135,8 @@ then
   _debug | tee $WORK_PATH/log
 fi
 
-while :
-do
+
+
   if [[ `date +%s` -ge $TIME_TO_RUN ]]
   then
     echo "Start!!!!!"
@@ -155,4 +160,4 @@ do
     echo $(($TIME_TO_RUN-`date +%s`)) to start
     sleep 0.2
   fi
-done
+

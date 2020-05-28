@@ -20,3 +20,4 @@ Variables:
 -   **MEM** Starting ram amount in megabytes. Default **60**
 -   **TIMEOUT** Timeout for one memstress iteration in seconds. Default **300**
 -   **BRUTE_FORCE_AMOUNT** Amount of mem for brute_force malloc() in megabytes. Default **600**
+-   **GENERATE_SOME_LOGS** Will just generate random logs as many as it can

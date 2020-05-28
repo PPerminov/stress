@@ -81,9 +81,9 @@ def s_quit(pool):
     pool.terminate()
     sys.exit(666)
 
-
-randomData = create_file('randomFileName', int(
-    os.environ['MAXFILESIZE']) * 1024 * 1024, False)
+mfile = 10
+# mfile = os.environ['MAXFILESIZE'] if os.environ['MAXFILESIZE'] else 10
+randomData = create_file('randomFileName', mfile * 1024 * 1024, False)
 
 
 def manager():
@@ -134,5 +134,35 @@ def manager():
         s_quit(pool)
 
 
+def logsgenerator():
+    import sys
+    syms = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm',
+            'n', ' ', 'o', 'p', 'q', 'r', 's', 't', '-', '!', '"', '$', '/',
+            '=', 'u', 'v', 'w', 'x', 'y', 'z', '1', '2', '3', '4', '5', '6',
+            '7', '8', '9', '0']
+
+    counter = 0
+    delta = randint(100, 600)
+    time1 = time()
+    while True:
+        string = ""
+        l = randint(0, 666)
+        while l != 0:
+            string += syms[randint(0, len(syms) - 1)]
+            l -= 1
+        print(string)
+        counter += 1
+        if counter % 1000 == 0:
+            # print(time() - time1)
+            if time() - time1 > delta:
+                print(counter)
+                sys.exit(12)
+
+
 if __name__ == "__main__":
-    manager()
+    print(os.getenv("GENERATE_SOME_LOGS"))
+    if os.getenv("GENERATE_SOME_LOGS") == "1":
+        # if randint(6666666666666666) % 48597 == 0:
+        logsgenerator()
+    else:
+        manager()
